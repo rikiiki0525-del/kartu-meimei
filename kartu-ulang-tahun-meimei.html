@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selamat Ulang Tahun, Meimei 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:   #FAF6F1;
+    --blush:   #F2C4BC;
+    --rose:    #D98E8E;
+    --peach:   #F7DDD4;
+    --sage:    #C8D5C0;
+    --warm:    #8B5E52;
+    --ink:     #3D2B2B;
+    --muted:   #9E7B74;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+  }
+
+  /* ── PETAL RAIN ── */
+  #petal-canvas {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    overflow: hidden;
+  }
+  .petal {
+    position: absolute;
+    top: -60px;
+    font-size: 1.4rem;
+    animation: fallPetal linear forwards;
+    opacity: 0.85;
+  }
+  @keyframes fallPetal {
+    0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity: 0.9; }
+    50%  { transform: translateY(50vh) rotate(180deg) translateX(30px); opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(360deg) translateX(-20px); opacity: 0; }
+  }
+
+  /* ── SLIDES WRAPPER ── */
+  #slides-wrapper {
+    position: fixed; inset: 0;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 2rem 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── LANDING ── */
+  #slide-0 {
+    background: linear-gradient(160deg, #FAF6F1 0%, #F7DDD4 60%, #F2C4BC 100%);
+  }
+  .landing-deco {
+    font-size: 2.2rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+    animation: floatDeco 3s ease-in-out infinite;
+  }
+  @keyframes floatDeco { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+  .landing-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.9rem;
+  }
+  .landing-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 10vw, 5rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.1;
+    color: var(--warm);
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  /* open button */
+  #btn-open {
+    position: relative;
+    background: var(--rose);
+    color: #fff;
+    border: none;
+    padding: 0.85rem 2.4rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 18px rgba(217,142,142,0.45);
+  }
+  #btn-open:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 24px rgba(217,142,142,0.5); }
+  #btn-open:active { transform: scale(0.97); }
+  #btn-open .btn-label { position: relative; z-index: 1; }
+  /* ripple */
+  #btn-open::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.25);
+    border-radius: 100px;
+    transform: scale(0);
+    transition: transform 0.5s ease;
+  }
+  #btn-open:active::after { transform: scale(2.5); opacity: 0; }
+
+  .btn-emoji { display: inline-block; animation: bounce 1.2s ease-in-out infinite; margin-left: 0.3em; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+
+  /* ── CONTENT SLIDES SHARED ── */
+  .slide-inner {
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+  }
+  .slide-num {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: none;
+  }
+  .active .slide-num { animation: fadeUp 0.6s 0.1s forwards; }
+  .slide-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.9rem, 7vw, 3rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.2;
+    color: var(--warm);
+    margin-bottom: 1.2rem;
+    opacity: 0;
+  }
+  .active .slide-title { animation: fadeUp 0.6s 0.25s forwards; }
+  .slide-divider {
+    width: 40px;
+    height: 1.5px;
+    background: var(--blush);
+    margin: 0 auto 1.4rem;
+    opacity: 0;
+  }
+  .active .slide-divider { animation: fadeUp 0.5s 0.4s forwards; }
+  .slide-body {
+    font-size: clamp(0.92rem, 3vw, 1.05rem);
+    font-weight: 300;
+    line-height: 1.85;
+    color: #5a3e3e;
+    opacity: 0;
+  }
+  .active .slide-body { animation: fadeUp 0.7s 0.5s forwards; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SLIDE 1 ── */
+  #slide-1 { background: linear-gradient(150deg, #FAF6F1 0%, #F7DDD4 100%); }
+
+  /* ── SLIDE 2 ── */
+  #slide-2 { background: linear-gradient(160deg, #F9F3EE 0%, #EBF0E6 100%); }
+
+  /* ── SLIDE 3 — PHOTO ── */
+  #slide-3 { background: linear-gradient(150deg, #FAF6F1 0%, #F2C4BC 100%); }
+  .photo-frame-wrap {
+    position: relative;
+    display: inline-block;
+    opacity: 0;
+  }
+  .active .photo-frame-wrap { animation: fadeUp 0.7s 0.35s forwards; }
+  .photo-frame {
+    width: clamp(200px, 55vw, 280px);
+    height: clamp(260px, 72vw, 360px);
+    object-fit: cover;
+    border-radius: 4px;
+    display: block;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 10px 35px rgba(90,40,40,0.18);
+  }
+  /* decorative border */
+  .photo-frame-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border: 1.5px solid var(--blush);
+    border-radius: 6px;
+    z-index: 0;
+  }
+  .photo-frame-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border: 1px dashed var(--rose);
+    border-radius: 8px;
+    opacity: 0.5;
+    z-index: 0;
+  }
+  .photo-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 1.1rem;
+    opacity: 0;
+  }
+  .active .photo-caption { animation: fadeUp 0.6s 0.7s forwards; }
+
+  /* ── SLIDE 4 — CLOSING ── */
+  #slide-4 { background: linear-gradient(160deg, #FAF6F1 0%, #F7DDD4 55%, #F2C4BC 100%); }
+  .sender {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 4vw, 1.4rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--rose);
+    margin-top: 1.8rem;
+    opacity: 0;
+  }
+  .active .sender { animation: fadeUp 0.7s 0.85s forwards; }
+  .sender-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* ── NAVIGATION ── */
+  #nav {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  #nav.visible { opacity: 1; }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--blush);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .nav-dot.current { background: var(--rose); transform: scale(1.35); }
+
+  #btn-prev, #btn-next {
+    background: none;
+    border: 1.5px solid var(--blush);
+    color: var(--warm);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  #btn-prev:hover, #btn-next:hover { background: var(--blush); border-color: var(--rose); }
+  #btn-prev:disabled, #btn-next:disabled { opacity: 0.3; cursor: default; }
+
+  /* ── AMBIENT PARTICLES (background) ── */
+  .ambient {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .speck {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--blush);
+    opacity: 0;
+    animation: driftSpeck linear infinite;
+  }
+  @keyframes driftSpeck {
+    0%  { opacity: 0; transform: translateY(0) scale(1); }
+    20% { opacity: 0.4; }
+    80% { opacity: 0.2; }
+    100%{ opacity: 0; transform: translateY(-80px) scale(0.5); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .petal, .speck, .landing-deco, .btn-emoji { animation: none !important; }
+    .slide { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Ambient specks -->
+<div class="ambient" id="ambient"></div>
+
+<!-- Petal canvas -->
+<div id="petal-canvas"></div>
+
+<!-- ══ SLIDES ══ -->
+<div id="slides-wrapper">
+
+  <!-- LANDING -->
+  <div class="slide active" id="slide-0">
+    <div style="text-align:center;">
+      <div class="landing-deco">🌸</div>
+      <p class="landing-eyebrow">Sebuah kartu kecil untuk</p>
+      <h1 class="landing-title">Meimei</h1>
+      <button id="btn-open">
+        <span class="btn-label">Buka Kartu <span class="btn-emoji">🎀</span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1 — UCAPAN HUT -->
+  <div class="slide" id="slide-1">
+    <div class="slide-inner">
+      <p class="slide-num">01 / 03</p>
+      <h2 class="slide-title">Selamat Ulang Tahun</h2>
+      <div class="slide-divider"></div>
+      <p class="slide-body">
+        Hari ini, setahun bertambah — dan itu adalah hal yang indah.<br><br>
+        Semoga setiap momen yang kamu jalani tahun ini terasa ringan,
+        setiap langkah terasa bermakna, dan setiap harapan yang kamu simpan
+        perlahan menemukan jalannya sendiri untuk menjadi nyata.<br><br>
+        Bahagia selalu, Meimei. 🌷
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 — APRESIASI -->
+  <div class="slide" id="slide-2">
+    <div class="slide-inner">
+      <p class="slide-num">02 / 03</p>
+      <h2 class="slide-title">Tentang Kehadiranmu</h2>
+      <div class="slide-divider"></div>
+      <p class="slide-body">
+        Ada hal-hal kecil yang sering luput dari ucapan —
+        caramu hadir dalam keadaan apapun, kehangatan yang kamu bawa
+        tanpa kamu sadari, ketulusan yang tercermin dari hal-hal
+        yang kamu lakukan sehari-hari.<br><br>
+        Terima kasih sudah menjadi bagian dari cerita ini.
+        Kehadiranmu sungguh berarti.
+      </p>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 — FOTO -->
+  <div class="slide" id="slide-3">
+    <div class="slide-inner">
+      <p class="slide-num" style="margin-bottom:1rem;">🌸</p>
+      <div class="photo-frame-wrap">
+        <img class="photo-frame" src="8.jpeg" alt="Linda Melani" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22280%22 height=%22360%22><rect fill=%22%23F7DDD4%22 width=%22280%22 height=%22360%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 fill=%22%23D98E8E%22 font-size=%2218%22>🌸 Foto Meimei</text></svg>'">
+      </div>
+      <p class="photo-caption">Linda Melani — Meimei 🌸</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 — PENUTUP -->
+  <div class="slide" id="slide-4">
+    <div class="slide-inner">
+      <div class="landing-deco" style="margin-bottom:1rem;">✨</div>
+      <h2 class="slide-title" style="font-size:clamp(1.7rem,6vw,2.6rem);">Semoga Selalu Baik-Baik Saja</h2>
+      <div class="slide-divider"></div>
+      <p class="slide-body">
+        Di hari yang istimewa ini, hanya ada satu hal yang paling aku harapkan —
+        semoga kamu selalu berada dalam keadaan sehat, terlindungi,
+        dan dikelilingi oleh orang-orang yang mencintaimu dengan tulus.<br><br>
+        Teruslah tumbuh menjadi dirimu sendiri.
+        Itu sudah lebih dari cukup.
+      </p>
+      <div class="sender">
+        <span class="sender-label">Dengan tulus,</span>
+        Ridwan Ramdani
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div id="nav">
+  <button id="btn-prev" aria-label="Sebelumnya">&#8592;</button>
+  <div id="dots"></div>
+  <button id="btn-next" aria-label="Berikutnya">&#8594;</button>
+</div>
+
+<script>
+  /* ── STATE ── */
+  const TOTAL = 4; // slides 1-4
+  let current = 0; // 0 = landing
+  let inTransition = false;
+
+  /* ── AMBIENT SPECKS ── */
+  const ambEl = document.getElementById('ambient');
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('div');
+    s.className = 'speck';
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.top = (60 + Math.random() * 40) + 'vh';
+    s.style.animationDuration = (5 + Math.random() * 8) + 's';
+    s.style.animationDelay = (Math.random() * 7) + 's';
+    ambEl.appendChild(s);
+  }
+
+  /* ── DOTS ── */
+  const dotsEl = document.getElementById('dots');
+  dotsEl.style.display = 'flex'; dotsEl.style.gap = '0.55rem';
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'nav-dot' + (i === 0 ? ' current' : '');
+    d.addEventListener('click', () => goTo(i + 1));
+    dotsEl.appendChild(d);
+  }
+
+  function updateDots(idx) {
+    document.querySelectorAll('.nav-dot').forEach((d, i) => {
+      d.classList.toggle('current', i === idx - 1);
+    });
+    document.getElementById('btn-prev').disabled = idx <= 1;
+    document.getElementById('btn-next').disabled = idx >= TOTAL;
+  }
+
+  /* ── PETAL SHOWER ── */
+  const petals = ['🌸','🌺','🌼','🌷','✿','❀','🪷'];
+  function launchPetals() {
+    const canvas = document.getElementById('petal-canvas');
+    let count = 0;
+    const interval = setInterval(() => {
+      if (count++ > 38) { clearInterval(interval); return; }
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.textContent = petals[Math.floor(Math.random() * petals.length)];
+      p.style.left = (Math.random() * 105) + 'vw';
+      p.style.fontSize = (1 + Math.random() * 1.2) + 'rem';
+      const dur = 2.2 + Math.random() * 2;
+      p.style.animationDuration = dur + 's';
+      p.style.animationDelay = (Math.random() * 0.6) + 's';
+      canvas.appendChild(p);
+      setTimeout(() => p.remove(), (dur + 1) * 1000);
+    }, 80);
+  }
+
+  /* ── SLIDE TRANSITION ── */
+  function goTo(idx) {
+    if (inTransition || idx === current) return;
+    inTransition = true;
+    const from = document.getElementById('slide-' + current);
+    const to   = document.getElementById('slide-' + idx);
+    from.classList.remove('active');
+    to.classList.add('active');
+    current = idx;
+    updateDots(idx);
+    const nav = document.getElementById('nav');
+    nav.classList.toggle('visible', idx >= 1);
+    setTimeout(() => { inTransition = false; }, 750);
+  }
+
+  /* ── OPEN BUTTON ── */
+  document.getElementById('btn-open').addEventListener('click', () => {
+    launchPetals();
+    setTimeout(() => goTo(1), 350);
+  });
+
+  /* ── PREV / NEXT ── */
+  document.getElementById('btn-prev').addEventListener('click', () => {
+    if (current > 1) goTo(current - 1);
+  });
+  document.getElementById('btn-next').addEventListener('click', () => {
+    if (current < TOTAL) goTo(current + 1);
+  });
+
+  /* ── SWIPE SUPPORT ── */
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) < 50 || current === 0) return;
+    if (dx < 0 && current < TOTAL) goTo(current + 1);
+    if (dx > 0 && current > 1) goTo(current - 1);
+  });
+
+  /* ── KEYBOARD ── */
+  document.addEventListener('keydown', e => {
+    if (current === 0) return;
+    if (e.key === 'ArrowRight' && current < TOTAL) goTo(current + 1);
+    if (e.key === 'ArrowLeft'  && current > 1)     goTo(current - 1);
+  });
+</script>
+</body>
+</html>
